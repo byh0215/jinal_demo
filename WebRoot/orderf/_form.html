@@ -1,0 +1,25 @@
+<meta  charset="utf-8"/>
+<fieldset class="solid">
+	<legend>订单修改</legend>
+	<input type="hidden" name="orderf.id" value="${(orderf.id)!}" />
+	<div>
+		<label>订单信息</label>
+		<input type="text" name="orderf.infor" value="${(orderf.infor)!}" />${inforMsg!}
+	</div>
+	<div>
+		<label>配送地址</label>
+		<input type="text" name="orderf.pos" value="${(orderf.pos)!}" />${posMsg!}
+	</div>
+	<div>
+		<label>订单总价</label>
+		<input type="text" name="orderf.price" value="${(orderf.price)!}" />${priceMsg!}
+	</div>
+	<div>
+		<label>支付状态</label>
+		<input type="text" name="orderf.ispay" value="${(orderf.ispay)!}" />${ispayMsg!}
+	</div>
+	<div>
+		<label>&nbsp;</label>
+		<input value="提交" type="submit">
+	</div>
+</fieldset>

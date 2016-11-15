@@ -1,0 +1,17 @@
+<fieldset class="solid">
+<meta  charset="utf-8"/>
+	<legend>活动管理</legend>
+	<input type="hidden" name="discount.id" value="${(discount.id)!}" />
+	<div>
+		<label>鏍囬</label>
+		<input type="text" name="discount.name" value="${(discount.name)!}" />${nameMsg!}
+	</div>
+	<div>
+		<label>鍐呭</label>
+		<textarea name="discount.infor" cols="80" rows="10">${(discount.infor)!}</textarea>${inforMsg!}
+	</div>
+	<div>
+		<label>&nbsp;</label>
+		<input value="鎻愪氦" type="submit">
+	</div>
+</fieldset>

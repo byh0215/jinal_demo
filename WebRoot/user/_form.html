@@ -1,0 +1,21 @@
+<fieldset class="solid">
+<meta  charset="utf-8"/>
+	<legend>用户管理</legend>
+	<input type="hidden" name="user.id" value="${(user.id)!}" />
+	<div>
+		<label>账号</label>
+		<input type="text" name="user.account" value="${(user.account)!}" />${accountMsg!}
+	</div>
+	<div>
+		<label>密码</label>
+		<input type="text" name="user.password" value="${(user.password)!}" />${passwordMsg!}
+	</div>
+	<div>
+		<label>昵称</label>
+		<input type="text" name="user.name" value="${(user.name)!}" />${nameMsg!}
+	</div>
+	<div>
+		<label>&nbsp;</label>
+		<input value="提交" type="submit">
+	</div>
+</fieldset>

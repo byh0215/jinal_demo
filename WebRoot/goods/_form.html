@@ -1,0 +1,23 @@
+<meta  charset="utf-8"/>
+<fieldset class="solid">
+	<legend>创建商品</legend>
+	<div>
+		<label>商品编号</label>
+		<input type="text" name="goods.id" value="${(goods.id)!}" />
+	</div>
+	<div>
+		<label>商品名称</label>
+		<input type="text" name="goods.good_name" value="${(goods.good_name)!}" />${nameMsg!}
+	</div><div>
+		<label>商品价格</label>
+		<input type="text" name="goods.good_price" value="${(goods.good_price)!}" />${priceMsg!}
+	</div>
+	<div>
+		<label>商品信息</label>
+		<textarea name="goods.good_infor" cols="80" rows="10">${(goods.good_infor)!} </textarea>${contentMsg!}
+	</div>
+	<div>
+		<label>&nbsp;</label>
+		<input value="提交" type="submit">
+	</div>
+</fieldset>
