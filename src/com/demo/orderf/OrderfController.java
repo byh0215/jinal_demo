@@ -11,6 +11,7 @@ import com.jfinal.core.Controller;
 @Before(BlogInterceptor.class)
 public class OrderfController extends Controller {
 	public void index() {
+		//
 		setAttr("blogPage", Orderf.me.paginate(getParaToInt(0, 1), 10));
 		render("orderf.html");
 	}
