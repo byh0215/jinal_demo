@@ -1,6 +1,6 @@
-package com.demo.goods;
+package com.demo.recommend;
 
-import com.demo.common.model.Goods;
+import com.demo.common.model.Recommend;
 import com.jfinal.core.Controller;
 import com.jfinal.validate.Validator;
 
@@ -16,7 +16,7 @@ public class BlogValidator extends Validator {
 	}
 	
 	protected void handleError(Controller controller) {
-		controller.keepModel(Goods.class);
+		controller.keepModel(Recommend.class);
 		String actionKey = getActionKey();
 		if (actionKey.equals("/goods/save"))
 			controller.render("add.html");

@@ -1,9 +1,9 @@
 package com.demo.common.config;
-import com.demo.goods.GoodsController;
+import com.demo.blog.BlogController;
 import com.demo.common.model._MappingKit;
-import com.demo.discount.DiscountController;
+import com.demo.fans.FansController;
 import com.demo.index.IndexController;
-import com.demo.orderf.OrderfController;
+import com.demo.recommend.RecommendController;
 import com.demo.user.UserController;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
@@ -35,10 +35,10 @@ public class DemoConfig extends JFinalConfig {
 	 */
 	public void configRoute(Routes me) {
 		me.add("/", IndexController.class, "/index");	// 第三个参数为该Controller的视图存放路径
-		me.add("/goods",GoodsController.class);	// 第三个参数省略时默认与第一个参数值相同，在此即为 "/blog2"
-		me.add("/orderf",OrderfController.class);
-		me.add("/discount",DiscountController.class);
-		me.add("/user",UserController.class);
+		me.add("/user",UserController.class);	// 第三个参数省略时默认与第一个参数值相同，在此即为 "/blog2"
+		me.add("/blog",BlogController.class);
+		me.add("/recommend",RecommendController.class);
+		me.add("/fans",FansController.class);
 	}
 	
 	public static C3p0Plugin createC3p0Plugin() {
@@ -80,6 +80,6 @@ public class DemoConfig extends JFinalConfig {
 	 * 运行此 main 方法可以启动项目，此main方法可以放置在任意的Class类定义中，不一定要放于此
 	 */
 	public static void main(String[] args) {
-		JFinal.start("WebRoot", 8005, "/", 5);
+		JFinal.start("WebRoot", 8007, "/", 5);
 	}
 }

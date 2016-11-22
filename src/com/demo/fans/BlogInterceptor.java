@@ -1,4 +1,4 @@
-package com.demo.discount;
+package com.demo.fans;
 
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;

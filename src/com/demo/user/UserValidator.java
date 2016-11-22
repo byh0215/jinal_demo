@@ -7,16 +7,16 @@ import com.jfinal.validate.Validator;
 /**
  * BlogValidator.
  */
-public class BlogValidator extends Validator {
+public class UserValidator extends Validator {
 	
 	protected void validate(Controller controller) {
 		validateRequiredString("user.account", "accountMsg", "请输入账号!");
-		validateRequiredString("user.password", "passwordMsg", "请输入密码");
+		validateRequiredString("user.password", "passwordMsg", "请输入密码!");
+		validateRequiredString("user.name", "nameMsg", "请输入昵称!");
 	}
 	
 	protected void handleError(Controller controller) {
 		controller.keepModel(User.class);
-		
 		String actionKey = getActionKey();
 		if (actionKey.equals("/user/save"))
 			controller.render("add.html");

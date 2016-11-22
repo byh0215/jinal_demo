@@ -1,6 +1,6 @@
-package com.demo.discount;
+package com.demo.fans;
 
-import com.demo.common.model.Discount;
+import com.demo.common.model.Fans;
 import com.jfinal.core.Controller;
 import com.jfinal.validate.Validator;
 
@@ -15,7 +15,7 @@ public class BlogValidator extends Validator {
 	}
 	
 	protected void handleError(Controller controller) {
-		controller.keepModel(Discount.class);
+		controller.keepModel(Fans.class);
 		String actionKey = getActionKey();
 		if (actionKey.equals("/discount/save"))
 			controller.render("add.html");

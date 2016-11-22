@@ -9,15 +9,15 @@ import com.jfinal.plugin.activerecord.Page;
  * 数据库字段名建议使用驼峰命名规则，便于与 java 代码保持一致，如字段名： userId
  */
 @SuppressWarnings("serial")
-public class Orderf extends BaseBlog<Orderf> {
+public class Recommend extends BaseBlog<Recommend> {
 	
-	public static final Orderf me = new Orderf();
+	public static final Recommend me = new Recommend();
 	
 	/**
 	 * 所有 sql 与业务逻辑写在 Model 或 Service 中，不要写在 Controller 中，养成好习惯，有利于大型项目的开发与维护
 	 */
-	public Page<Orderf> paginate(int pageNumber, int pageSize) {
-		return paginate(pageNumber, pageSize, "select *", "from orderf order by id asc");
+	public Page<Recommend> paginate(int pageNumber, int pageSize) {
+		return paginate(pageNumber, pageSize, "select *", "from recommend order by id asc");
 	}
 }
 

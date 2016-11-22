@@ -16,14 +16,14 @@ import com.jfinal.core.Controller;
 @Before(BlogInterceptor.class)
 public class UserController extends Controller {
 	public void index() {
-		setAttr("blogPage", User.me.paginate(getParaToInt(0, 1), 10));
+		setAttr("userPage", User.me.paginate(getParaToInt(0, 1), 10));
 		render("user.html");
 	}
 	
 	public void add() {
 	}
 	
-	@Before(BlogValidator.class)
+	@Before(UserValidator.class)
 	public void save() {
 		getModel(User.class).save();
 		redirect("/user");
@@ -33,7 +33,7 @@ public class UserController extends Controller {
 		setAttr("user", User.me.findById(getParaToInt()));
 	}
 	
-	@Before(BlogValidator.class)
+	@Before(UserValidator.class)
 	public void update() {
 		getModel(User.class).update();
 		redirect("/user");

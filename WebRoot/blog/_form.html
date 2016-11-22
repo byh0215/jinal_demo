@@ -1,0 +1,42 @@
+<meta  charset="utf-8"/>
+<fieldset class="solid">
+	<legend>帖子修改</legend>
+	<input type="hidden" name="blog.id" value="${(blog.id)!}" />
+	<div>
+		<label>帖子名称</label>
+		<input type="text" name="blog.name" value="${(blog.name)!}" />${nameMsg!}
+	</div>
+	<script type="text/javascript">
+	function fun(){
+	    obj = document.getElementsByName("Label");
+	    check_val = [];
+	    for(k in obj){
+	        if(obj[k].checked){check_val.push("1");}
+	        else{check_val.push("0");}  
+	    }
+	    alert(check_val);
+	}
+	</script>
+	
+	<div>
+		<label>请选择标签</label>
+		<form action="" method="get" value="${(blog.label)!}" >
+		<label style="text-align:left;width:40px"><input name="Label" type="checkbox" value="1" />早餐 </label>
+		<label style="text-align:left;width:40px"><input name="Label" type="checkbox" value="2" />午餐</label>
+		<label style="text-align:left;width:40px"><input name="Label" type="checkbox" value="3" />晚餐 </label>
+		<label style="text-align:left;width:40px"><input name="Label" type="checkbox" value="4" />热菜 </label>
+		<label style="text-align:left;width:40px"><input name="Label" type="checkbox" value="5" />凉菜 </label>
+		<label style="text-align:left;width:40px"><input name="Label" type="checkbox" value="6" />食材 </label>
+		<label style="text-align:left;width:40px"><input name="Label" type="checkbox" value="7" />酱料</label>
+		</form>${labelMsg!}
+		<input value="测试" onclick="fun()" type="button">
+	</div>
+	<div>
+		<label>帖子内容</label>
+		<textarea name="blog.content" cols="80" rows="10" value="${(blog.content)!}"></textarea>${contentMsg!}
+	</div>
+	<div>
+		<label>&nbsp;</label>
+		<input value="提交"  type="submit">
+	</div>
+</fieldset>

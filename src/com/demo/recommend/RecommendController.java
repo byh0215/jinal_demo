@@ -1,6 +1,6 @@
-package com.demo.orderf;
+package com.demo.recommend;
 
-import com.demo.common.model.Orderf;
+import com.demo.common.model.Recommend;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 
@@ -9,35 +9,35 @@ import com.jfinal.core.Controller;
  * 所有 sql 与业务逻辑写在 Model 或 Service 中，不要写在 Controller 中，养成好习惯，有利于大型项目的开发与维护
  */
 @Before(BlogInterceptor.class)
-public class OrderfController extends Controller {
+public class RecommendController extends Controller {
 	public void index() {
-		//
-		setAttr("blogPage", Orderf.me.paginate(getParaToInt(0, 1), 10));
-		render("orderf.html");
+		setAttr("blogPage", Recommend.me.paginate(getParaToInt(0, 1), 10));
+		render("goods.html");
 	}
 	
 	public void add() {
+		
 	}
 	
 	@Before(BlogValidator.class)
 	public void save() {
-		getModel(Orderf.class).save();
-		redirect("/orderf");
+		getModel(Recommend.class).save();
+		redirect("/goods");
 	}
 	
 	public void edit() {
-		setAttr("orderf", Orderf.me.findById(getParaToInt()));
+		setAttr("goods", Recommend.me.findById(getParaToInt()));
 	}
 	
 	@Before(BlogValidator.class)
 	public void update() {
-		getModel(Orderf.class).update();
-		redirect("/orderf");
+		getModel(Recommend.class).update();
+		redirect("/goods");
 	}
 	
 	public void delete() {
-		Orderf.me.deleteById(getParaToInt());
-		redirect("/orderf");
+		Recommend.me.deleteById(getParaToInt());
+		redirect("/goods");
 	}
 }
 

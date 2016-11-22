@@ -1,4 +1,4 @@
-package com.demo.goods;
+package com.demo.recommend;
 
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
