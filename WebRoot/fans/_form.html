@@ -1,20 +1,16 @@
 <meta  charset="utf-8"/>
 <fieldset class="solid">
-	<legend>创建商品</legend>
+	<legend>添加关注</legend>
 	<div>
-		<label>商品编号</label>
-		<input type="text" name="goods.id" value="${(goods.id)!}" />
+		<label>编号</label>
+		<input type="text" name="fans.id" value="${(fans.id)!}" />
 	</div>
 	<div>
-		<label>商品名称</label>
-		<input type="text" name="goods.good_name" value="${(goods.good_name)!}" />${nameMsg!}
+		<label>帐号</label>
+		<input type="text" name="fans.account" value="${(fans.account)!}" />${accountMsg!}
 	</div><div>
-		<label>商品价格</label>
-		<input type="text" name="goods.good_price" value="${(goods.good_price)!}" />${priceMsg!}
-	</div>
-	<div>
-		<label>商品信息</label>
-		<textarea name="goods.good_infor" cols="80" rows="10">${(goods.good_infor)!} </textarea>${contentMsg!}
+		<label>他关注的人</label>
+		<input type="text" name="fans.follows" value="${(fans.follows)!}" />${followsMsg!}
 	</div>
 	<div>
 		<label>&nbsp;</label>

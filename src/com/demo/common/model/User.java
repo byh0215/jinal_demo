@@ -1,6 +1,8 @@
 package com.demo.common.model;
 
-import com.demo.common.model.base.BaseBlog;
+import java.util.List;
+
+import com.demo.common.model.base.BaseUser;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -9,7 +11,7 @@ import com.jfinal.plugin.activerecord.Page;
  * 数据库字段名建议使用驼峰命名规则，便于与 java 代码保持一致，如字段名： userId
  */
 @SuppressWarnings("serial")
-public class User extends BaseBlog<User> {
+public class User extends BaseUser<User> {
 	
 	public static final User me = new User();
 	
@@ -18,6 +20,20 @@ public class User extends BaseBlog<User> {
 	 */
 	public Page<User> paginate(int pageNumber, int pageSize) {
 		return paginate(pageNumber, pageSize, "select *", "from user order by id asc");
+	}
+	public void setFollowNum(String account){
+		List<Fans> fid = Fans.me.find("select id from fans where account="+account);
+		List<User> uid = User.me.find("select id from user where account="+account);
+		User.me.findByIdLoadColumns(uid.get(0).getId(),"follow_num")
+		   .set("follow_num",fid.size())
+		   .update();
+	}
+	public void setFansNum(String account){
+		List<Fans> fid = Fans.me.find("select id from fans where follows="+account);
+		List<User> uid = User.me.find("select id from user where account="+account);
+		User.me.findByIdLoadColumns(uid.get(0).getId(),"fans_num")
+		   .set("fans_num",fid.size())
+		   .update();
 	}
 }
 

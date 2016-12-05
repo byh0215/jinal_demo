@@ -1,0 +1,33 @@
+<#include "/common/_layout.html"/>
+<@layout>
+<meta  charset="utf-8"/>
+<h1>关注的人&nbsp;&nbsp;
+<a href="/fans/add">添加新的关注</a>
+</h1>
+<div class="table_box">
+	<table class="list"> 
+		<tbody>
+			<tr>
+				<th width="4%">id</th>
+				<th width="10%">帐号</th>
+				<th width="25%">关注他的帐号</th>
+				<th width="8%">操作</th>
+			</tr>
+			
+			<#list fansPage.getList() as x>
+			<tr>
+				<td style="text-align:left;">${x.id}</td>
+				<td style="text-align:left;">${x.account}</td>
+				<td style="text-align:left;">${x.follows}</td>
+				<td style="text-align:left;">
+					&nbsp;&nbsp;<a href="/fans/delete/${x.id}">删除</a>
+					&nbsp;&nbsp;<a href="/fans/edit/${x.id}">修改</a>
+				</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "/common/_paginate.html" />
+	<@paginate currentPage=fansPage.pageNumber totalPage=fansPage.totalPage actionUrl="/fans/" />
+</div>
+</@layout>

@@ -4,6 +4,7 @@
 	<input type="hidden" name="user.id" value="${(user.id)!}" />
 	<div>
 		<label>账号</label>
+		<input type="hidden" name="abc" value="adc" />
 		<input type="text" name="user.account" value="${(user.account)!}" />${accountMsg!}
 	</div>
 	<div>
@@ -13,6 +14,10 @@
 	<div>
 		<label>昵称</label>
 		<input type="text" name="user.name" value="${(user.name)!}" />${nameMsg!}
+	</div>
+	<div>
+		<label>上传头像</label>	
+  		<input type="file" name ="user.img_src" />	
 	</div>
 	<div>
 		<label>&nbsp;</label>

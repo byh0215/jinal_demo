@@ -7,19 +7,19 @@ import com.jfinal.validate.Validator;
 /**
  * BlogValidator.
  */
-public class BlogValidator extends Validator {
+public class FansValidator extends Validator {
 	
 	protected void validate(Controller controller) {
-		validateRequiredString("discount.name", "nameMsg", "请输入活动名称!");
-		validateRequiredString("discount.infor", "inforMsg", "请输入活动信息!");
+		validateRequiredString("fans.account", "accountMsg", "请输入帐号!");
+		validateRequiredString("fans.follows", "followsMsg", "请输入关注的帐号!");
 	}
 	
 	protected void handleError(Controller controller) {
 		controller.keepModel(Fans.class);
 		String actionKey = getActionKey();
-		if (actionKey.equals("/discount/save"))
+		if (actionKey.equals("/fans/save"))
 			controller.render("add.html");
-		else if (actionKey.equals("/discount/update"))
+		else if (actionKey.equals("/fans/update"))
 			controller.render("edit.html");
 	}
 }

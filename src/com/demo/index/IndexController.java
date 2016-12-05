@@ -9,6 +9,9 @@ public class IndexController extends Controller {
 	public void index() {
 		render("index.html");
 	}
+	public void initMyHome(){
+		
+	}
 }
 
 

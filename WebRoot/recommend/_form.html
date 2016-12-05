@@ -1,17 +1,18 @@
 <fieldset class="solid">
 <meta  charset="utf-8"/>
-	<legend>活动管理</legend>
-	<input type="hidden" name="discount.id" value="${(discount.id)!}" />
+	<legend>推荐位管理</legend>
+	<input type="hidden" name="recommend.id" value="${(recommend.id)!}" />
 	<div>
-		<label>鏍囬</label>
-		<input type="text" name="discount.name" value="${(discount.name)!}" />${nameMsg!}
+		<label>推荐位名称</label>
+		<input type="text" name="recommend.name" value="${(recommend.name)!}" />${nameMsg!}
 	</div>
 	<div>
-		<label>鍐呭</label>
-		<textarea name="discount.infor" cols="80" rows="10">${(discount.infor)!}</textarea>${inforMsg!}
+		<label>推荐位图片地址</label>
+		<input type="text" name="recommend.img_src" value="${(recommend.img_src)!}" />${img_srcMsg!}
 	</div>
+	
 	<div>
 		<label>&nbsp;</label>
-		<input value="鎻愪氦" type="submit">
+		<input value="提交" type="submit">
 	</div>
 </fieldset>

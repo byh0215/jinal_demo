@@ -2,34 +2,19 @@
 <fieldset class="solid">
 	<legend>帖子修改</legend>
 	<input type="hidden" name="blog.id" value="${(blog.id)!}" />
-	<div>
+	<div>`
 		<label>帖子名称</label>
 		<input type="text" name="blog.name" value="${(blog.name)!}" />${nameMsg!}
 	</div>
-	<script type="text/javascript">
-	function fun(){
-	    obj = document.getElementsByName("Label");
-	    check_val = [];
-	    for(k in obj){
-	        if(obj[k].checked){check_val.push("1");}
-	        else{check_val.push("0");}  
-	    }
-	    alert(check_val);
-	}
-	</script>
-	
 	<div>
 		<label>请选择标签</label>
-		<form action="" method="get" value="${(blog.label)!}" >
-		<label style="text-align:left;width:40px"><input name="Label" type="checkbox" value="1" />早餐 </label>
-		<label style="text-align:left;width:40px"><input name="Label" type="checkbox" value="2" />午餐</label>
-		<label style="text-align:left;width:40px"><input name="Label" type="checkbox" value="3" />晚餐 </label>
-		<label style="text-align:left;width:40px"><input name="Label" type="checkbox" value="4" />热菜 </label>
-		<label style="text-align:left;width:40px"><input name="Label" type="checkbox" value="5" />凉菜 </label>
-		<label style="text-align:left;width:40px"><input name="Label" type="checkbox" value="6" />食材 </label>
-		<label style="text-align:left;width:40px"><input name="Label" type="checkbox" value="7" />酱料</label>
-		</form>${labelMsg!}
-		<input value="测试" onclick="fun()" type="button">
+		<label style="text-align:left;width:40px"><input name="label0" type="checkbox" value="1" />早餐 </label>
+		<label style="text-align:left;width:40px"><input name="label1" type="checkbox" value="1" />午餐</label>
+		<label style="text-align:left;width:40px"><input name="label2" type="checkbox" value="1" />晚餐 </label>
+		<label style="text-align:left;width:40px"><input name="label3" type="checkbox" value="1" />热菜 </label>
+		<label style="text-align:left;width:40px"><input name="label4" type="checkbox" value="1" />凉菜 </label>
+		<label style="text-align:left;width:40px"><input name="label5" type="checkbox" value="1" />食材 </label>
+		<label style="text-align:left;width:40px"><input name="label6" type="checkbox" value="1" />酱料</label>
 	</div>
 	<div>
 		<label>帖子内容</label>
@@ -37,6 +22,6 @@
 	</div>
 	<div>
 		<label>&nbsp;</label>
-		<input value="提交"  type="submit">
+		<input value="提交" type="submit">
 	</div>
 </fieldset>

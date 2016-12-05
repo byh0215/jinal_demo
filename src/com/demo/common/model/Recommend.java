@@ -1,6 +1,6 @@
 package com.demo.common.model;
 
-import com.demo.common.model.base.BaseBlog;
+import com.demo.common.model.base.BaseRecommend;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -9,7 +9,7 @@ import com.jfinal.plugin.activerecord.Page;
  * 数据库字段名建议使用驼峰命名规则，便于与 java 代码保持一致，如字段名： userId
  */
 @SuppressWarnings("serial")
-public class Recommend extends BaseBlog<Recommend> {
+public class Recommend extends BaseRecommend<Recommend> {
 	
 	public static final Recommend me = new Recommend();
 	

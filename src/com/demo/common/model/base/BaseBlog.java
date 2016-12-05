@@ -17,12 +17,36 @@ public abstract class BaseBlog<M extends BaseBlog<M>> extends Model<M> implement
 		return get("id");
 	}
 
-	public void setTitle(java.lang.String title) {
-		set("title", title);
+	public void setName(java.lang.String name) {
+		set("name", name);
 	}
 
-	public java.lang.String getTitle() {
-		return get("title");
+	public java.lang.String getName() {
+		return get("name");
+	}
+
+	public void setLabel(java.lang.String label) {
+		set("label", label);
+	}
+
+	public java.lang.String getLabel() {
+		return get("label");
+	}
+
+	public void setEditUser(java.lang.String editUser) {
+		set("edit_user", editUser);
+	}
+
+	public java.lang.String getEditUser() {
+		return get("edit_user");
+	}
+
+	public void setImgSrc(java.lang.String imgSrc) {
+		set("img_src", imgSrc);
+	}
+
+	public java.lang.String getImgSrc() {
+		return get("img_src");
 	}
 
 	public void setContent(java.lang.String content) {
@@ -31,6 +55,14 @@ public abstract class BaseBlog<M extends BaseBlog<M>> extends Model<M> implement
 
 	public java.lang.String getContent() {
 		return get("content");
+	}
+
+	public void setThumb(java.lang.Integer thumb) {
+		set("thumb", thumb);
+	}
+
+	public java.lang.Integer getThumb() {
+		return get("thumb");
 	}
 
 }

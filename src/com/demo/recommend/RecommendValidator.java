@@ -5,22 +5,21 @@ import com.jfinal.core.Controller;
 import com.jfinal.validate.Validator;
 
 /**
- * BlogValidator.
+ * Validator.
  */
-public class BlogValidator extends Validator {
+public class RecommendValidator extends Validator {
 	
 	protected void validate(Controller controller) {
-		validateRequiredString("goods.good_name", "nameMsg", "请输入商品名称!");
-		validateRequiredString("goods.good_price", "priceMsg", "请输入商品价格!");
-		validateRequiredString("goods.good_infor", "contentMsg", "请输入商品信息!");
+		validateRequiredString("name", "nameMsg", "请输入推荐位名称!");
+		validateRequiredString("img_src", "img_srcMsg", "请输入推荐位图片!");
 	}
 	
 	protected void handleError(Controller controller) {
 		controller.keepModel(Recommend.class);
 		String actionKey = getActionKey();
-		if (actionKey.equals("/goods/save"))
+		if (actionKey.equals("/recommend/save"))
 			controller.render("add.html");
-		else if (actionKey.equals("/goods/update"))
+		else if (actionKey.equals("/recommend/update"))
 			controller.render("edit.html");
 	}
 }
