@@ -4,9 +4,13 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.demo.common.model.Blog;
+import com.demo.common.model.Comment;
+import com.demo.common.model.Fans;
 import com.demo.common.model.Recommend;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.upload.UploadFile;
 
 /**
  * BlogController
@@ -14,12 +18,19 @@ import com.jfinal.core.Controller;
  */
 @Before(BlogInterceptor.class)
 public class CommentController extends Controller {
-	
+	String webPath="http://127.0.0.1/upload/";
 	public void uploadComment(){
-		
+		HttpServletRequest r = getRequest();
+		String content = r.getParameter("content");
+		String account = r.getParameter("account");
+		String blog_id= r.getParameter("blog_id");
+		new Comment().set("content",content).set("account", account).set("blog_id",blog_id).save();
 	}
 	public void findCommentList(){
-		
+		HttpServletRequest r = getRequest();
+		String blog_id = r.getParameter("blog_id");
+		List<Comment> co = Comment.me.find("select blog_id from comment where blog_id="+blog_id);
+		renderJson(co);
 	}
 	
 //	public void index() {

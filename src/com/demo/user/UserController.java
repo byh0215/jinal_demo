@@ -28,6 +28,7 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
  * 所有 sql 与业务逻辑写在 Model 或 Service 中，不要写在 Controller 中，养成好习惯，有利于大型项目的开发与维护
  */
 public class UserController extends Controller {
+	List<User> name;
 	String webPath="http://127.0.0.1/upload/";
 	public void index() {
 		setAttr("userPage", User.me.paginate(getParaToInt(0, 1), 10));
@@ -104,41 +105,41 @@ public class UserController extends Controller {
 		User.me.deleteById(getParaToInt());
 		redirect("/user");
 	}
-	public void checkLogin(){//finish
+	public void checkLogin(){//检查登陆状态,finished
 		HttpServletRequest r = getRequest();
-		String uac = r.getParameter("uac");
-		String upw = r.getParameter("upw");
-		List<User> user = User.me.find("select * from user where account="+uac+"and password="+upw);
+		String uac = r.getParameter("account");
+		String upw = r.getParameter("password");
+		List<User> user = User.me.find("select * from user where account="+"'"+uac+"'"+" and password="+"'"+upw+"'");
 		if(user!=null){
 			renderText("1");
 		}else{
 			renderText("0");
 		}	
 	}
-		public void findAccount(){//finish
+		public void checkAccount(){//检测用户名是否存在,finished
 			HttpServletRequest r = getRequest();
-			String uac = r.getParameter("uac");
-			List<User> ac = User.me.find("select * from user where account="+uac);
-			if(ac!=null){
+			String uac = r.getParameter("account");
+			List<User> ac = User.me.find("select * from user where account="+"'"+uac+"'");
+			if(ac.size()==0){
 				renderText("1");
 			}else{
 				renderText("0");
 			}	
 		}
-		public void createUser(){//finish
+		public void createUser(){//创建新用户,finished
 			HttpServletRequest r = getRequest();
-			String uac = r.getParameter("uac");
-			String upw = r.getParameter("upw");
+			String uac = r.getParameter("account");
+			String upw = r.getParameter("password");
 			new User().set("account", uac).set("password", upw).save();
 			renderText("1");
 		}
-		public void fetchUserCollection(){//processing
+		public void fetchUserCollection(){//抓取用户收藏列表
 			HttpServletRequest r = getRequest();
 			String uac = r.getParameter("account");
-			List<Collection> idl = Collection.me.find("select blog_id from collection where account="+uac);
+			List<Collection> idl = Collection.me.find("select blog_id from collection where account="+"'"+uac+"'");
 			renderJson(idl);
 		}
-		public void setComment(){//finish
+		public void setComment(){//设置评论
 			HttpServletRequest r = getRequest();
 			String content = r.getParameter("content");
 			String blog_id = r.getParameter("id");
@@ -146,28 +147,28 @@ public class UserController extends Controller {
 			new Comment().set("content", content).set("blog_id", blog_id).set("account",account).save();
 			renderText("1");
 		}
-		public void setImg(){//finish
+		public void setImg(){//设置头像
 			HttpServletRequest r = getRequest();
 			UploadFile files =getFile("uploadfile","c:/Users/Administrator/workspace/Xiaocaidao/WebRoot/img/");
 			files.getFileName();
 			String account = r.getParameter("account");
-			List<User> id = User.me.find("select id from user where account="+account);
+			List<User> id = User.me.find("select id from user where account="+"'"+account+"'");
 			User.me.findByIdLoadColumns(id.get(0).getId(),"img_src")
 				   .set("img_src",webPath)
 				   .update();
 			renderText("1");
 		}
-		public void findImg(){//finish
+		public void findImg(){//查找头像
 			HttpServletRequest r = getRequest();
 			String account = r.getParameter("account");
-			List<User> im = User.me.find("select img_src from user where account="+account);
+			List<User> im = User.me.find("select img_src from user where account="+"'"+account+"'");
 			renderText(im.get(0).getImgSrc());
 		}
-		public void setName(){//finish
+		public void setName(){//设置用户名
 			HttpServletRequest r = getRequest();
 			String name = r.getParameter("name");
 			String account = r.getParameter("account");
-			List<User> id  = User.me.find("select id from user where account="+account);
+			List<User> id  = User.me.find("select id from user where account="+"'"+account+"'");
 			User.me.findByIdLoadColumns(id.get(0).getId(),"name")
 				   .set("name",name)
 				   .update();
@@ -176,14 +177,16 @@ public class UserController extends Controller {
 		public void findName(){//finish
 			HttpServletRequest r = getRequest();
 			String account = r.getParameter("account");
-			List<User> name = User.me.find("select name from user where account="+account);
+			System.out.println(account);
+			name = User.me.find("select name from user where account="+"'"+account+"'");
+			System.out.println(name);
 			renderText(name.get(0).getName());
 		}
 		public void setPassword(){//finish
 			HttpServletRequest r = getRequest();
 			String password = r.getParameter("password");
 			String account = r.getParameter("account");
-			List<User> id = User.me.find("select id from user where account="+account);
+			List<User> id = User.me.find("select id from user where account="+"'"+account+"'");
 			User.me.findByIdLoadColumns(id.get(0).getId(),"password")
 				   .set("password",password)
 				   .update();
@@ -192,13 +195,13 @@ public class UserController extends Controller {
 		public void findFollowNum(){//finish
 			HttpServletRequest r = getRequest();
 			String account = r.getParameter("account");
-			List<User> fo = User.me.find("select follows_num from user where account="+account);
+			List<User> fo = User.me.find("select follows_num from user where account="+"'"+account+"'");
 			renderText(fo.get(0).getFollowNum().toString());
 		}
 		public void findFansNum(){//finish
 			HttpServletRequest r = getRequest();
 			String account = r.getParameter("account");
-			List<User> fa = User.me.find("select fans_num from user where account="+account);
+			List<User> fa = User.me.find("select fans_num from user where account="+"'"+account+"'");
 			renderText(fa.get(0).getFansNum().toString());
 		}
 			

@@ -72,15 +72,15 @@ public class BlogController extends Controller {
 	public void findBlog(){//finish(find a blog)
 		HttpServletRequest r = getRequest();
 		String id = r.getParameter("id");
-		List<Blog> blog = Blog.me.find("select * from blog where id="+id);
+		List<Blog> blog = Blog.me.find("select * from blog where id="+"'"+id+"'");
 		renderJson(blog);
 	}
 	public void findEditUserName(){//finish
 		HttpServletRequest r = getRequest();
 		String id = r.getParameter("id");
-		List<Blog> blog = Blog.me.find("select * from blog where id="+id);
+		List<Blog> blog = Blog.me.find("select * from blog where id="+"'"+id+"'");
 		String ac=blog.get(0).getEditUser();
-		List<User> user = User.me.find("select * from user where account="+ac);
+		List<User> user = User.me.find("select * from user where account="+"'"+ac+"'");
 		String na=user.get(0).getName();
 		renderText(na);
 	}
