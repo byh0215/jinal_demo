@@ -1,0 +1,18 @@
+<fieldset class="solid">
+<meta  charset="utf-8"/>
+	<legend>推荐位管理</legend>
+	<input type="hidden" name="recommend.id" value="${(recommend.id)!}" />
+	<div>
+		<label>推荐位名称</label>
+		<input type="text" name="recommend.name" value="${(recommend.name)!}" />${nameMsg!}
+	</div>
+	<div>
+		<label>推荐位图片地址</label>
+		<input type="text" name="recommend.img_src" value="${(recommend.img_src)!}" />${img_srcMsg!}
+	</div>
+	
+	<div>
+		<label>&nbsp;</label>
+		<input value="提交" type="submit">
+	</div>
+</fieldset>
