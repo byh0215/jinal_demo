@@ -16,7 +16,13 @@ import com.jfinal.core.Controller;
  */
 @Before(BlogInterceptor.class)
 public class CollectionController extends Controller {
-	public void postCollectionIdList(){//blocked
+	public void setCollection(){//blocked
+		HttpServletRequest r = getRequest();
+		String account = r.getParameter("account");
+		List<Collection> idl = Collection.me.find("select blog_id from user where account="+account);
+		renderJson(idl);
+	}
+	public void fetchCollectionList(){//blocked
 		HttpServletRequest r = getRequest();
 		String account = r.getParameter("account");
 		List<Collection> idl = Collection.me.find("select blog_id from user where account="+account);

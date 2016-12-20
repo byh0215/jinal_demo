@@ -1,12 +1,15 @@
 package com.demo.fans;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.demo.common.model.Collection;
+import com.demo.common.model.Comment;
 import com.demo.common.model.Fans;
 import com.demo.common.model.User;
+import com.demo.user.UserController;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 
@@ -44,26 +47,53 @@ public class FansController extends Controller {
 		Fans.me.deleteById(getParaToInt());
 		redirect("/fans");
 	}
-	public void fetchFollowsList(){//finish
-		HttpServletRequest r = getRequest();
-		String account = r.getParameter("account");
-		List<Fans> fo = Fans.me.find("select follows from collection where account="+account);
-		renderJson(fo);
-	}
 	public void fetchFansList(){//finish
 		HttpServletRequest r = getRequest();
 		String follows = r.getParameter("account");
-		List<Fans> fa = Fans.me.find("select account from collection where follows="+follows);
+		String sql=
+				"select fa.*,u.name as userName,u.img_src as userImg from fans fa inner join user u on fa.account=u.account where fa.follows="+"'"+follows+"'"+"ORDER BY fa.id";
+	    List<Fans> fa = Fans.me.find(sql);
+	    List<User> u = User.me.find("select u.*,u.account from user u inner join fans fa on fa.account=u.account where fa.follows= "+"'"+follows+"'"+" ORDER BY fa.id");
+	    changePath_F(fa,u);
 		renderJson(fa);
+	}
+	public void fetchFollowsList(){//finish
+		HttpServletRequest r = getRequest();
+		String account = r.getParameter("account");
+		String sql=
+				"select fo.*,u.name as userName from fans fo inner join user u on fo.follows=u.account where fo.account= "+"'"+account+"'"+" ORDER BY fo.id";
+		List<User> u = User.me.find("select u.*,u.account from user u inner join fans fo on fo.follows=u.account where fo.account= "+"'"+account+"'"+" ORDER BY fo.id");
+	    List<Fans> fo= Fans.me.find(sql);
+	    changePath_F(fo,u);
+		renderJson(fo);
 	}
 	public void setFollows(){//finish
 		HttpServletRequest r = getRequest();
 		String account = r.getParameter("account");
 		String follows = r.getParameter("follows");
-		new Fans().set("account", account).set("follows", follows).save();
-		User.me.setFollowNum(account);
-		User.me.setFansNum(account);
-		renderText("1");
+		List<Fans> fo = Fans.me.find("select id from fans where account="+"'"+account+"'"+" and follows="+"'"+follows+"'");
+		System.out.println(fo.size());
+		if(fo.size()!=0){
+			renderText("0");			
+		}else{
+			System.out.println("asddsadsa");
+			new Fans().set("account", account).set("follows", follows).save();
+			User.me.setFollowNum(account);
+			User.me.setFansNum(account);
+			renderText("1");	
+		}	
+	}
+	//doing here
+	public void changePath_F(List<Fans> f,List<User> u){
+	    for (int i = 0; i < u.size(); i++) {
+	    	User temp=u.get(i);
+	    	User old=u.get(i);
+	    	String text=old.getImgSrc();
+	    	temp.set("img_src",UserController.getWebPath(text));
+	    	Collections.replaceAll(u,old,temp);
+	    	String up=u.get(i).getImgSrc();
+	    	f.get(i).put("userImg",up);
+		}
 	}
 }
 

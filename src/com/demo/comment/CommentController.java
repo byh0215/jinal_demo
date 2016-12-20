@@ -1,5 +1,6 @@
 package com.demo.comment;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +9,8 @@ import com.demo.common.model.Blog;
 import com.demo.common.model.Comment;
 import com.demo.common.model.Fans;
 import com.demo.common.model.Recommend;
+import com.demo.common.model.User;
+import com.demo.user.UserController;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.upload.UploadFile;
@@ -18,50 +21,44 @@ import com.jfinal.upload.UploadFile;
  */
 @Before(BlogInterceptor.class)
 public class CommentController extends Controller {
-	String webPath="http://127.0.0.1/upload/";
+	public void index() {
+		//
+		setAttr("commentPage", Comment.me.paginate(getParaToInt(0, 1), 10));
+		render("comment.html");
+	}
+	public void delete() {
+		Blog.me.deleteById(getParaToInt());
+		redirect("/blog");
+	}
 	public void uploadComment(){
 		HttpServletRequest r = getRequest();
-		String content = r.getParameter("content");
 		String account = r.getParameter("account");
 		String blog_id= r.getParameter("blog_id");
+		String content = r.getParameter("content");
 		new Comment().set("content",content).set("account", account).set("blog_id",blog_id).save();
+		renderText("1");
 	}
 	public void findCommentList(){
-		HttpServletRequest r = getRequest();
-		String blog_id = r.getParameter("blog_id");
-		List<Comment> co = Comment.me.find("select blog_id from comment where blog_id="+blog_id);
+		String blog_id = getPara("blog_id");
+		String sql=
+				"select c.*,u.name as userName,u.img_src as userImg from comment c inner join user u on c.account=u.account where blog_id= "+"'"+blog_id+"'"+" ORDER BY c.id";
+		List<User> u = User.me.find("select u.*,c.account from user u inner join comment c on c.account=u.account where blog_id= "+"'"+blog_id+"'"+" ORDER BY c.id");
+	    List<Comment> co = Comment.me.find(sql);
+	    changePath_C(co,u);
+	    System.out.println(co);
 		renderJson(co);
 	}
-	
-//	public void index() {
-//		setAttr("recommendPage", Recommend.me.paginate(getParaToInt(0, 1), 10));
-//		render("recommend.html");
-//	}
-//	
-//	public void add() {
-//		
-//	}
-//	
-//	@Before(RecommendValidator.class)
-//	public void save() {
-//		getModel(Recommend.class).save();
-//		redirect("/recommend");
-//	}
-//	
-//	public void edit() {
-//		setAttr("recommend", Recommend.me.findById(getParaToInt()));
-//	}
-//	
-//	@Before(RecommendValidator.class)
-//	public void update() {
-//		getModel(Recommend.class).update();
-//		redirect("/recommend");
-//	}
-//	
-//	public void delete() {
-//		Recommend.me.deleteById(getParaToInt());
-//		redirect("/recommend");
-//	}
+	public void changePath_C(List<Comment> co,List<User> u){
+	    for (int i = 0; i < u.size(); i++) {
+	    	User temp=u.get(i);
+	    	User old=u.get(i);
+	    	String text=old.getImgSrc();
+	    	temp.set("img_src",UserController.getWebPath(text));
+	    	Collections.replaceAll(u,old,temp);
+	    	String up=u.get(i).getImgSrc();
+	    	co.get(i).put("userImg",up);
+		}
+	}
 }
 
 

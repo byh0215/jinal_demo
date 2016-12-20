@@ -49,12 +49,12 @@ public abstract class BaseUser<M extends BaseUser<M>> extends Model<M> implement
 		return get("img_src");
 	}
 
-	public void setFollowNum(java.lang.Integer followNum) {
-		set("follow_num", followNum);
+	public void setFollowsNum(java.lang.Integer followsNum) {
+		set("follows_num", followsNum);
 	}
 
-	public java.lang.Integer getFollowNum() {
-		return get("follow_num");
+	public java.lang.Integer getFollowsNum() {
+		return get("follows_num");
 	}
 
 	public void setFansNum(java.lang.Integer fansNum) {

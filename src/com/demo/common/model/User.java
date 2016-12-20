@@ -22,16 +22,16 @@ public class User extends BaseUser<User> {
 		return paginate(pageNumber, pageSize, "select *", "from user order by id asc");
 	}
 	public void setFollowNum(String account){
-		List<Fans> fid = Fans.me.find("select id from fans where account="+account);
-		List<User> uid = User.me.find("select id from user where account="+account);
-		User.me.findByIdLoadColumns(uid.get(0).getId(),"follow_num")
-		   .set("follow_num",fid.size())
+		List<Fans> fid = Fans.me.find("select id from fans where account="+"'"+account+"'");
+		List<User> uid = User.me.find("select id from user where account="+"'"+account+"'");
+		User.me.findById(uid.get(0).getId())
+		   .set("follows_num",fid.size())
 		   .update();
 	}
 	public void setFansNum(String account){
-		List<Fans> fid = Fans.me.find("select id from fans where follows="+account);
-		List<User> uid = User.me.find("select id from user where account="+account);
-		User.me.findByIdLoadColumns(uid.get(0).getId(),"fans_num")
+		List<Fans> fid = Fans.me.find("select id from fans where follows="+"'"+account+"'");
+		List<User> uid = User.me.find("select id from user where account="+"'"+account+"'");
+		User.me.findById(uid.get(0).getId())
 		   .set("fans_num",fid.size())
 		   .update();
 	}

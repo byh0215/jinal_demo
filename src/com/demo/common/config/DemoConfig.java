@@ -1,5 +1,7 @@
 package com.demo.common.config;
 import com.demo.blog.BlogController;
+import com.demo.collection.CollectionController;
+import com.demo.comment.CommentController;
 import com.demo.common.model._MappingKit;
 import com.demo.fans.FansController;
 import com.demo.index.IndexController;
@@ -39,6 +41,8 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/blog",BlogController.class);
 		me.add("/recommend",RecommendController.class);
 		me.add("/fans",FansController.class);
+		me.add("/comment",CommentController.class);
+		me.add("/collection",CollectionController.class);
 	}
 	
 	public static C3p0Plugin createC3p0Plugin() {

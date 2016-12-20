@@ -49,25 +49,25 @@ public class RecommendController extends Controller {
 		String day = r.getParameter("day");
 		List<Recommend> re = null;
 		if(day.equals("1")){
-			re = Recommend.me.find("select * from recommend where day=1");
+			re = Recommend.me.find("select * from recommend where day='1'");
 		}
 		if(day.equals("2")){
-			re = Recommend.me.find("select * from recommend where day=2");
+			re = Recommend.me.find("select * from recommend where day='2'");
 		}
 		if(day.equals("3")){
-			re = Recommend.me.find("select * from recommend where day=3");
+			re = Recommend.me.find("select * from recommend where day='3'");
 		}
 		if(day.equals("4")){
-			re = Recommend.me.find("select * from recommend where day=4");
+			re = Recommend.me.find("select * from recommend where day='4'");
 		}
 		if(day.equals("5")){
-			re = Recommend.me.find("select * from recommend where day=5");
+			re = Recommend.me.find("select * from recommend where day='5'");
 		}
 		if(day.equals("6")){
-			re = Recommend.me.find("select * from recommend where day=6");
+			re = Recommend.me.find("select * from recommend where day='6'");
 		}
 		if(day.equals("7")){
-			re = Recommend.me.find("select * from recommend where day=7");
+			re = Recommend.me.find("select * from recommend where day='7'");
 		}
 		renderJson(re);
 	}

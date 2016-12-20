@@ -2,6 +2,12 @@ package com.demo.user;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.text.DecimalFormat;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,8 +34,8 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
  * 所有 sql 与业务逻辑写在 Model 或 Service 中，不要写在 Controller 中，养成好习惯，有利于大型项目的开发与维护
  */
 public class UserController extends Controller {
-	List<User> name;
-	String webPath="http://127.0.0.1/upload/";
+	public static String webPath=null;
+	
 	public void index() {
 		setAttr("userPage", User.me.paginate(getParaToInt(0, 1), 10));
 		render("user.html");
@@ -38,6 +44,7 @@ public class UserController extends Controller {
 	public void add() {
 	}
 	public void save() {
+		 String Path="C:/Users/Administrator/workspace/Xiaocaidao/WebRoot/upload/";
 		final int permitedSize = 314572800;
 		Map<String, String> textMap = new HashMap<String, String>(); 
 		Map<String, String> fileMap = new HashMap<String, String>();  
@@ -83,7 +90,7 @@ public class UserController extends Controller {
 		    new User().set("account",textMap.get("user.account"))
 	          .set("password", textMap.get("user.password"))
 	          .set("name", textMap.get("user.name"))
-	          .set("img_src",webPath+fileMap.get("filename")).save();
+	          .set("img_src",Path+fileMap.get("filename")).save();
 		    
 		} catch (Exception exception) {   
 			exception.printStackTrace();
@@ -105,12 +112,33 @@ public class UserController extends Controller {
 		User.me.deleteById(getParaToInt());
 		redirect("/user");
 	}
+	public void checkIp() throws Exception{
+		HttpServletRequest r = getRequest();
+		Enumeration<NetworkInterface> nifs;
+		nifs = NetworkInterface.getNetworkInterfaces();
+        while (nifs.hasMoreElements()) {
+            NetworkInterface nif = nifs.nextElement();	 
+            // 获得与该网络接口绑定的 IP 地址，一般只有一个
+            Enumeration<InetAddress> addresses = nif.getInetAddresses();
+            while (addresses.hasMoreElements()) {
+                InetAddress addr = addresses.nextElement();
+        
+                if (addr instanceof Inet4Address) { // 只关心 IPv4 地址
+                    if(nif.getName().equals("eth4")){
+                    	System.out.println("网卡接口名称：" + nif.getName());
+                    	System.out.println("网卡接口地址：" + addr.getHostAddress());
+                    	webPath="http://"+addr.getHostAddress()+":8008/";
+                    } 
+                }
+            }
+        }
+	}
 	public void checkLogin(){//检查登陆状态,finished
 		HttpServletRequest r = getRequest();
 		String uac = r.getParameter("account");
 		String upw = r.getParameter("password");
 		List<User> user = User.me.find("select * from user where account="+"'"+uac+"'"+" and password="+"'"+upw+"'");
-		if(user!=null){
+		if(user.size()!=0){
 			renderText("1");
 		}else{
 			renderText("0");
@@ -120,7 +148,7 @@ public class UserController extends Controller {
 			HttpServletRequest r = getRequest();
 			String uac = r.getParameter("account");
 			List<User> ac = User.me.find("select * from user where account="+"'"+uac+"'");
-			if(ac.size()==0){
+			if(ac.size()!=0){
 				renderText("1");
 			}else{
 				renderText("0");
@@ -139,47 +167,38 @@ public class UserController extends Controller {
 			List<Collection> idl = Collection.me.find("select blog_id from collection where account="+"'"+uac+"'");
 			renderJson(idl);
 		}
-		public void setComment(){//设置评论
-			HttpServletRequest r = getRequest();
-			String content = r.getParameter("content");
-			String blog_id = r.getParameter("id");
-			String account = r.getParameter("account");
-			new Comment().set("content", content).set("blog_id", blog_id).set("account",account).save();
-			renderText("1");
-		}
 		public void setImg(){//设置头像
-			HttpServletRequest r = getRequest();
-			UploadFile files =getFile("uploadfile","c:/Users/Administrator/workspace/Xiaocaidao/WebRoot/img/");
-			files.getFileName();
-			String account = r.getParameter("account");
+			UploadFile files =getFile("uploadfile");
+			String Path="C:/Users/Administrator/workspace/Xiaocaidao/WebRoot/upload/";
+			String fileName=files.getFileName();
+			String account = getPara("account");		
+			List<User> im = User.me.find("select img_src from user where account="+"'"+account+"'");
 			List<User> id = User.me.find("select id from user where account="+"'"+account+"'");
-			User.me.findByIdLoadColumns(id.get(0).getId(),"img_src")
-				   .set("img_src",webPath)
-				   .update();
+			String fim=Path+fileName;
+//			if(im.get(0).getImgSrc().indexOf("touxiang")<0){
+//				deleteFile(fim);
+//			}
+			User.me.findById(id.get(0).getId()).set("img_src",fim).update();
 			renderText("1");
 		}
 		public void findImg(){//查找头像
 			HttpServletRequest r = getRequest();
 			String account = r.getParameter("account");
 			List<User> im = User.me.find("select img_src from user where account="+"'"+account+"'");
-			renderText(im.get(0).getImgSrc());
+			renderText(getWebPath(im.get(0).getImgSrc()));
 		}
 		public void setName(){//设置用户名
 			HttpServletRequest r = getRequest();
 			String name = r.getParameter("name");
 			String account = r.getParameter("account");
 			List<User> id  = User.me.find("select id from user where account="+"'"+account+"'");
-			User.me.findByIdLoadColumns(id.get(0).getId(),"name")
-				   .set("name",name)
-				   .update();
+			User.me.findById(id.get(0).getId()).set("name",name).update();
 			renderText("1");
 		}
 		public void findName(){//finish
 			HttpServletRequest r = getRequest();
 			String account = r.getParameter("account");
-			System.out.println(account);
-			name = User.me.find("select name from user where account="+"'"+account+"'");
-			System.out.println(name);
+			List<User> name = User.me.find("select name from user where account="+"'"+account+"'");
 			renderText(name.get(0).getName());
 		}
 		public void setPassword(){//finish
@@ -187,23 +206,53 @@ public class UserController extends Controller {
 			String password = r.getParameter("password");
 			String account = r.getParameter("account");
 			List<User> id = User.me.find("select id from user where account="+"'"+account+"'");
-			User.me.findByIdLoadColumns(id.get(0).getId(),"password")
-				   .set("password",password)
-				   .update();
+			User.me.findById(id.get(0).getId()).set("password",password).update();
 			renderText("1");
 		}
 		public void findFollowNum(){//finish
 			HttpServletRequest r = getRequest();
 			String account = r.getParameter("account");
-			List<User> fo = User.me.find("select follows_num from user where account="+"'"+account+"'");
-			renderText(fo.get(0).getFollowNum().toString());
+			List<User> follows = User.me.find("select follows_num from user where account="+"'"+account+"'");
+			renderText(follows.get(0).getFollowsNum()+"");
 		}
 		public void findFansNum(){//finish
 			HttpServletRequest r = getRequest();
 			String account = r.getParameter("account");
-			List<User> fa = User.me.find("select fans_num from user where account="+"'"+account+"'");
-			renderText(fa.get(0).getFansNum().toString());
+			List<User> fans = User.me.find("select fans_num from user where account="+"'"+account+"'");
+			renderText(fans.get(0).getFansNum()+"");
 		}
+		 /** 
+		  * 删除单个文件 
+		  *  
+		  * @param fileName 
+		  *            要删除的文件的文件名 
+		  * @return 单个文件删除成功返回true，否则返回false 
+		  */  
+		 public static boolean deleteFile(String fileName) {  
+		  File file = new File(fileName);  
+		  // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除  
+		  if (file.exists() && file.isFile()) {  
+		   if (file.delete()) {  
+		    System.out.println("删除单个文件" + fileName + "成功！");  
+		    return true;  
+		   } else {  
+		    System.out.println("删除单个文件" + fileName + "失败！");  
+		    return false;  
+		   }  
+		  } else {  
+		   System.out.println("删除单个文件失败：" + fileName + "不存在！");  
+		   return false;  
+		  }  
+		 }  
+		 public static String getWebPath(String aPath){
+			 String finalPath=null;
+			 String Path="C:/Users/Administrator/workspace/Xiaocaidao/WebRoot/upload/";
+			 System.out.println("传过来的路径： "+aPath);
+			 System.out.println("截取后的路径： "+aPath.substring(Path.length()-7));
+			 finalPath=webPath+aPath.substring(Path.length()-7);
+			 return finalPath;
+		 }
+		
 			
 		//1、url访问：
 		//本机访问：http://localhost/blog/test  http://127.0.0.1/blog/test

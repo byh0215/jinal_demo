@@ -1,11 +1,13 @@
 package com.demo.blog;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.demo.common.model.Blog;
 import com.demo.common.model.User;
+import com.demo.user.UserController;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.upload.UploadFile;
@@ -16,7 +18,7 @@ import com.jfinal.upload.UploadFile;
  */
 @Before(BlogInterceptor.class)
 public class BlogController extends Controller {
-	String webPath="http://127.0.0.1/upload/";
+	public String Path="C:/Users/Administrator/workspace/Xiaocaidao/WebRoot/upload/";
 	public void index() {
 		//
 		setAttr("blogPage", Blog.me.paginate(getParaToInt(0, 1), 10));
@@ -60,52 +62,75 @@ public class BlogController extends Controller {
 		redirect("/blog");
 	}
 	public void fetchHotBlogList(){//finish
-		HttpServletRequest r = getRequest();
-		String re = r.getParameter("request");
-		if(re.equals("do")){
-			List<Blog> blog = Blog.me.find("SELECT TOP 3 * FROM blog ORDER BY thumb DESC");
-			renderJson(blog);
-			//其中的content需要在客户端缩写成summary
-		}
-		renderText("Error!");
-	}
-	public void findBlog(){//finish(find a blog)
-		HttpServletRequest r = getRequest();
-		String id = r.getParameter("id");
-		List<Blog> blog = Blog.me.find("select * from blog where id="+"'"+id+"'");
+		String sql=
+				"select b.*,u.name as userName from blog b inner join user u on b.edit_user=u.account ORDER BY b.thumb DESC";
+	    List<Blog> blog = Blog.me.find(sql);
+	    List<User> u = User.me.find("select u.*,b.edit_user,b.thumb from user u inner join blog b on b.edit_user=u.account ORDER BY b.thumb DESC,u.id");
+	    changePath(blog,u);
 		renderJson(blog);
 	}
-	public void findEditUserName(){//finish
+	public void findBlog(){//finish(find a blog)//收藏页
+		String id = getPara("id");
+		String sql=
+				"select b.*,u.name as userName from blog b inner join user u on b.edit_user=u.account where b.id= "+id+" ORDER BY b.id";
+	    List<Blog> blog = Blog.me.find(sql);
+	    List<User> u = User.me.find("select u.*,b.edit_user,b.id from user u inner join blog b on b.edit_user=u.account where b.id= "+id+" ORDER BY b.id");
+	    changePath(blog,u);
+		renderJson(blog);
+	}
+	public void findEditUser(){//finish
 		HttpServletRequest r = getRequest();
 		String id = r.getParameter("id");
 		List<Blog> blog = Blog.me.find("select * from blog where id="+"'"+id+"'");
 		String ac=blog.get(0).getEditUser();
-		List<User> user = User.me.find("select * from user where account="+"'"+ac+"'");
-		String na=user.get(0).getName();
-		renderText(na);
+//		List<User> user = User.me.find("select * from user where account="+"'"+ac+"'");
+//		String na=user.get(0).getName();
+		renderText(ac);
 	}
 	public void uploadBlog(){//finish
-		HttpServletRequest r = getRequest();
-		String name = r.getParameter("name");
-		String label = r.getParameter("label");
-		String edituser= r.getParameter("edit_user");
-		String content= r.getParameter("content");
-		UploadFile files = getFile(getPara("uploadfile"),"upload");//存文件
+		UploadFile files =getFile("uploadfile");//存文件
+		String name = getPara("name");
+		String label = getPara("label");
+		String edituser= getPara("account");
+		String content= getPara("content");
 		String fileName=files.getFileName();
-		String img=webPath+fileName;
+		String img=Path+fileName;
 		new Blog().set("name",name).set("label", label).set("edit_user",edituser).set("img_src",img).set("content", content).save();
+		renderText("1");
 	}
 	public void fetchNewlyBlogList(){//finish
+		String sql=
+				"select b.*,u.name as userName from blog b inner join user u on b.edit_user=u.account ORDER BY b.id DESC";
+	    List<Blog> blog = Blog.me.find(sql);
+	    List<User> u = User.me.find("select u.*,b.edit_user,b.id from user u inner join blog b on b.edit_user=u.account ORDER BY b.id DESC");
+	    changePath(blog,u);
+		renderJson(blog);
+	}
+	public void setThumb(){//finish
 		HttpServletRequest r = getRequest();
-		String re = r.getParameter("request");
-		if(re.equals("do")){
-			List<Blog> blog = Blog.me.find("SELECT * FROM blog ORDER BY id");
-			renderJson(blog);
-			//其中的content需要在客户端list界面缩写成summary
+		String id = r.getParameter("blog_id");
+		List<Blog> th = Blog.me.find("select thumb from blog where id="+"'"+id+"'");
+		Blog.me.findById(Integer.parseInt(id)).set("thumb",(th.get(0).getThumb())+1).update();
+		System.out.println((th.get(0).getThumb())+"");
+		renderText((th.get(0).getThumb())+1+"");
+	}
+	public void changePath(List<Blog> blog,List<User> u){
+		for (int i = 0; i < blog.size(); i++) {
+	    	Blog temp=blog.get(i);
+	    	Blog old=blog.get(i);
+	    	String text=old.getImgSrc();
+	    	temp.set("img_src",UserController.getWebPath(text));
+	    	Collections.replaceAll(blog,old,temp);
 		}
-		//可写错误信息
-		renderText("Error!");
-		
+	    for (int i = 0; i < u.size(); i++) {
+	    	User temp=u.get(i);
+	    	User old=u.get(i);
+	    	String text=old.getImgSrc();
+	    	temp.set("img_src",UserController.getWebPath(text));
+	    	Collections.replaceAll(u,old,temp);
+	    	String up=u.get(i).getImgSrc();
+	    	blog.get(i).put("userImg",up);
+		}
 	}
 }
 
