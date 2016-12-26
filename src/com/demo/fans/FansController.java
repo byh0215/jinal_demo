@@ -71,15 +71,15 @@ public class FansController extends Controller {
 		HttpServletRequest r = getRequest();
 		String account = r.getParameter("account");
 		String follows = r.getParameter("follows");
+		String type = r.getParameter("type");
 		List<Fans> fo = Fans.me.find("select id from fans where account="+"'"+account+"'"+" and follows="+"'"+follows+"'");
 		System.out.println(fo.size());
 		if(fo.size()!=0){
 			renderText("0");			
 		}else{
-			System.out.println("asddsadsa");
 			new Fans().set("account", account).set("follows", follows).save();
 			User.me.setFollowNum(account);
-			User.me.setFansNum(account);
+			User.me.setFansNum(follows);
 			renderText("1");	
 		}	
 	}

@@ -78,6 +78,13 @@ public class BlogController extends Controller {
 	    changePath(blog,u);
 		renderJson(blog);
 	}
+	public void fetchMyBlogList(){//finish
+		String ac = getPara("account");
+		String sql=
+				"select * from blog where edit_user= "+"'"+ac+"'"+" ORDER BY id";
+	    List<Blog> blog = Blog.me.find(sql);
+		renderJson(blog);
+	}
 	public void findEditUser(){//finish
 		HttpServletRequest r = getRequest();
 		String id = r.getParameter("id");

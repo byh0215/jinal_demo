@@ -27,6 +27,7 @@ public class User extends BaseUser<User> {
 		User.me.findById(uid.get(0).getId())
 		   .set("follows_num",fid.size())
 		   .update();
+		System.out.println("follow"+fid.size());
 	}
 	public void setFansNum(String account){
 		List<Fans> fid = Fans.me.find("select id from fans where follows="+"'"+account+"'");
@@ -34,6 +35,7 @@ public class User extends BaseUser<User> {
 		User.me.findById(uid.get(0).getId())
 		   .set("fans_num",fid.size())
 		   .update();
+		System.out.println("fans"+fid.size());
 	}
 }
 

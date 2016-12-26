@@ -213,12 +213,14 @@ public class UserController extends Controller {
 			HttpServletRequest r = getRequest();
 			String account = r.getParameter("account");
 			List<User> follows = User.me.find("select follows_num from user where account="+"'"+account+"'");
+			System.out.println(follows.get(0).getFollowsNum()+"");
 			renderText(follows.get(0).getFollowsNum()+"");
 		}
 		public void findFansNum(){//finish
 			HttpServletRequest r = getRequest();
 			String account = r.getParameter("account");
 			List<User> fans = User.me.find("select fans_num from user where account="+"'"+account+"'");
+			System.out.println(fans.get(0).getFansNum()+"");
 			renderText(fans.get(0).getFansNum()+"");
 		}
 		 /** 
