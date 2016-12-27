@@ -78,6 +78,14 @@ public class BlogController extends Controller {
 	    changePath(blog,u);
 		renderJson(blog);
 	}
+	public static List<Blog> findBlog_server(String id){//finish(find a blog)//收藏页
+		String sql=
+				"select b.*,u.name as userName from blog b inner join user u on b.edit_user=u.account where b.id= "+id+" ORDER BY b.id";
+	    List<Blog> blog = Blog.me.find(sql);
+	    List<User> u = User.me.find("select u.*,b.edit_user,b.id from user u inner join blog b on b.edit_user=u.account where b.id= "+id+" ORDER BY b.id");
+	    changePath(blog,u);
+		return(blog);
+	}
 	public void fetchMyBlogList(){//finish
 		String ac = getPara("account");
 		String sql=
@@ -121,7 +129,7 @@ public class BlogController extends Controller {
 		System.out.println((th.get(0).getThumb())+"");
 		renderText((th.get(0).getThumb())+1+"");
 	}
-	public void changePath(List<Blog> blog,List<User> u){
+	public static void changePath(List<Blog> blog,List<User> u){
 		for (int i = 0; i < blog.size(); i++) {
 	    	Blog temp=blog.get(i);
 	    	Blog old=blog.get(i);
