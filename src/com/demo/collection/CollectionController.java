@@ -46,8 +46,9 @@ public class CollectionController extends Controller {
 	}
 	public void checkCollection(){//finished
 		HttpServletRequest r = getRequest();
+		String ac = r.getParameter("account");
 		String bid = r.getParameter("blog_id");
-		List<Collection> idl = Collection.me.find("select id from collection where blog_id="+bid);
+		List<Collection> idl = Collection.me.find("select id from collection where blog_id="+bid+" and account="+"'"+ac+"'");
 		if(idl.size()>0){
 			renderText("1");
 		}else{
